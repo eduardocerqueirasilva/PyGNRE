@@ -8,29 +8,7 @@ import xml.etree.ElementTree as ET
 
 
 
-class ConsultaUF:
-    def __init__(self, ambiente='homologacao'):
-        self.ambiente = ambiente
-        self.ambiente_teste = ambiente == 'homologacao'
-        self.schema = xmlschema.XMLSchema('schema/consulta_config_uf_v1.00.xsd')  # Adicione o caminho para o seu arquivo XSD
-
-    def get_header_soap(self):
-        action = (
-            'https://www.testegnre.pe.gov.br/gnreWS/services/GnreConfigUF'
-            if self.ambiente_teste else
-            'https://www.gnre.pe.gov.br/gnreWS/services/GnreConfigUF'
-        )
-        return {
-            'Content-Type': 'application/soap+xml;charset=utf-8',
-            'SOAPAction': action
-        }
-
-    def soap_action(self):
-        return (
-            'https://www.testegnre.pe.gov.br/gnreWS/services/GnreConfigUF'
-            if self.ambiente_teste else
-            'https://www.gnre.pe.gov.br/gnreWS/services/GnreConfigUF'
-        )
+class ConsultaUF:    
 
     def gerar_corpo_gnre(self, ambiente, uf , receita, tiposGnre):
         gnre = etree.Element('TConsultaConfigUf', xmlns='http://www.gnre.pe.gov.br')
@@ -67,18 +45,20 @@ class ConsultaUF:
         return etree.tostring(soap_env, pretty_print=True, xml_declaration=True, encoding='UTF-8')
 
     def validar_xml(self, gnre_element):
+        schema = xmlschema.XMLSchema('schema/consulta_config_uf_v1.00.xsd')  # Adicione o caminho para o seu arquivo XSD
         xml_string = etree.tostring(gnre_element)
-        if self.schema.is_valid(xml_string):
+        if schema.is_valid(xml_string):
             print("XML de Envio da UF validado com sucesso")
         else:
             print("Erro no XML de Envio da UF")
-            print(self.schema.validate(xml_string))
+            print(schema.validate(xml_string))
 
     
     
     def consultar(self, ambiente, uf , receita, tiposGnre):
-        headers = self.get_header_soap()
-        url = self.soap_action()
+        headers = {'Content-Type': 'application/soap+xml;charset=utf-8',
+                    'SOAPAction': 'https://www.gnre.pe.gov.br/gnreWS/services/GnreConfigUF'}
+        url = 'https://www.gnre.pe.gov.br/gnreWS/services/GnreConfigUF'
         gnre_element = self.gerar_corpo_gnre(ambiente, uf , receita, tiposGnre)
         
         # Valida o XML gerado
@@ -139,11 +119,10 @@ class ConsultaUF:
 
 
 # Exemplo de uso 
-consulta_uf = ConsultaUF(ambiente='producao')
 
-retorno_consulta = consulta_uf.consultar('1', 'RJ','100099','S') 
+retorno_consulta = ConsultaUF().consultar('1', 'PR','100099','S') 
 
-consulta_uf.validar_xml_retorno(retorno_consulta)
+ConsultaUF().validar_xml_retorno(retorno_consulta)
 
 
 
