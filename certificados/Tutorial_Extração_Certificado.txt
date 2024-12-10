@@ -1,3 +1,20 @@
-1 - Coloque seu certificado com extensão .pfx no diretório certificados para ser extraido
-2 - Após colocar seu certificado no diretório, edite o arquivo "extrair_pfx.py" editando o nome e a senha do certificado
-3 - Execute o arquivo extrair_pfx.py, após a execução irá criar 2 arquivos de nome "certificado.pem" e "chave_certificado.pem"
+🛠️ Instruções para Configurar e Executar a Extração do Certificado
+
+Siga as etapas abaixo para realizar a extração do seu certificado `.pfx` corretamente:
+
+1️⃣ Coloque seu certificado no diretório correto
+   - Primeiro, você precisa salvar o seu arquivo de certificado com extensão `.pfx` no diretório chamado `certificados`.
+   - Este diretório é o local onde o script buscará seu certificado para realizar a extração.
+
+2️⃣ Edite o script `extrair_pfx.py` com as informações necessárias
+   - Após salvar o certificado no diretório, edite o arquivo `extrair_pfx.py`.
+   - Nele, você deve atualizar o nome do seu arquivo `.pfx` e informar a senha correta para desbloquear o certificado.
+
+3️⃣ Execute o script `extrair_pfx.py`
+   - Após configurar corretamente o nome e a senha no script, execute o código.
+   - Isso criará dois arquivos no mesmo diretório:
+     - `certificado.pem`: Contendo o certificado no formato PEM.
+     - `chave_certificado.pem`: Contendo a chave privada no formato PEM.
+
+Seguindo esses passos, você concluirá a extração com sucesso.
+Caso encontre algum erro, verifique se o nome do arquivo e a senha estão corretos, e se as dependências necessárias estão instaladas.
