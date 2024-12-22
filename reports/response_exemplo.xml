@@ -1,0 +1,91 @@
+<Envelope>
+  <Body>
+    <gnreRespostaMsg>
+      <TResultLote_GNRE>
+        <ambiente>1</ambiente>
+        <numeroRecibo>24000103549338</numeroRecibo>
+        <situacaoProcess>
+          <codigo>402</codigo>
+          <descricao>Lote Processado com sucesso</descricao>
+        </situacaoProcess>
+        <resultado>
+          
+          
+          
+          
+          <guia>
+            <situacaoGuia>0</situacaoGuia>
+            <ufFavorecida>PR</ufFavorecida>
+            <tipoGnre>0</tipoGnre>
+            <contribuinteEmitente>
+              <identificacao>
+                <IE>9067526381</IE>
+              </identificacao>
+              <razaoSocial>A BITENCOURT COMERCIO DE FERRAGENS LTDA</razaoSocial>
+              <endereco>RUA MANOEL RAMIRES, 4280 - LTE 2-REM QDR 1 - PARQUE INDUSTRI</endereco>
+              <municipio>28104</municipio>
+              <uf>PR</uf>
+              <telefone>4436221683</telefone>
+            </contribuinteEmitente>
+            <itensGNRE>
+              <item>
+                <receita>100099</receita>
+                <documentoOrigem>21020</documentoOrigem>
+                <dataVencimento>2024-11-22</dataVencimento>
+                <valor>200.00</valor>
+                <valor>200.00</valor>
+              </item>
+            </itensGNRE>
+            <valorGNRE>200.00</valorGNRE>
+            <dataPagamento>2024-11-22</dataPagamento>
+            <dataLimitePagamento>2024-11-22</dataLimitePagamento>
+            <informacoesComplementares>
+              <informacao>ICMS ST COMPLEMENTAR NF 67640 - METALURGICA LOTH LTDA1</informacao>
+            </informacoesComplementares>
+            <nossoNumero>2024112270086710</nossoNumero>
+            <linhaDigitavel>858500000029000000902438270120241122270086710005</linhaDigitavel>
+            <codigoBarras>85850000002000000902432701202411227008671000</codigoBarras>
+          </guia>
+          
+          
+          
+          
+          
+          <guia>
+            <situacaoGuia>0</situacaoGuia>
+            <ufFavorecida>PR</ufFavorecida>
+            <tipoGnre>0</tipoGnre>
+            <contribuinteEmitente>
+              <identificacao>
+                <IE>9067526381</IE>
+              </identificacao>
+              <razaoSocial>A BITENCOURT COMERCIO DE FERRAGENS LTDA</razaoSocial>
+              <endereco>RUA MANOEL RAMIRES, 4280 - LTE 2-REM QDR 1 - PARQUE INDUSTRI</endereco>
+              <municipio>28104</municipio>
+              <uf>PR</uf>
+              <telefone>4436221683</telefone>
+            </contribuinteEmitente>
+            <itensGNRE>
+              <item>
+                <receita>100099</receita>
+                <documentoOrigem>21021</documentoOrigem>
+                <dataVencimento>2024-11-22</dataVencimento>
+                <valor>201.00</valor>
+                <valor>201.00</valor>
+              </item>
+            </itensGNRE>
+            <valorGNRE>201.00</valorGNRE>
+            <dataPagamento>2024-11-22</dataPagamento>
+            <dataLimitePagamento>2024-11-22</dataLimitePagamento>
+            <informacoesComplementares>
+              <informacao>ICMS ST COMPLEMENTAR NF 67640 - METALURGICA LOTH LTDA2</informacao>
+            </informacoesComplementares>
+            <nossoNumero>2024112270086753</nossoNumero>
+            <linhaDigitavel>858800000024010000902435270120241122270086753006</linhaDigitavel>
+            <codigoBarras>85880000002010000902432701202411227008675300</codigoBarras>
+          </guia>
+        </resultado>
+      </TResultLote_GNRE>
+    </gnreRespostaMsg>
+  </Body>
+</Envelope>
