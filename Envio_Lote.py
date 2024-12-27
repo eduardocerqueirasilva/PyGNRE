@@ -1,6 +1,7 @@
 import requests
 from lxml import etree
 import xmlschema
+from validadorXML import validar_xml
 
 class GeraLoteGNRE:
     def __init__(self, ambiente):
@@ -76,18 +77,6 @@ class GeraLoteGNRE:
         
         return etree.tostring(env, pretty_print=True, xml_declaration=True, encoding='UTF-8')
 
-    
-    def validar_xml_envio_lote(self,xml_envio_lote):
-        print('\nINICIANDO VALIDAÇÂO DO LOTE DE ENVIO\n')
-        xsd_path_envio = xmlschema.XMLSchema('schema/lote_gnre_v2.00.xsd')       
-        xml_string = etree.tostring(xml_envio_lote)
-        
-        if xsd_path_envio.is_valid(xml_string):
-            print("XML de Envio do Lote validado com sucesso")
-        else:
-            print("Erro no XML de Envio do Lote")
-            print(xsd_path_envio.validate(xml_string))
-
        
     
     
@@ -113,14 +102,7 @@ class GeraLoteGNRE:
     
     
     
-    def validar_xml_retorno_lote(self,xml_retorno_lote):
-        print('\nINICIANDO VALIDAÇÂO DO LOTE DE RETORNO\n')
-        xsd_path_envio = xmlschema.XMLSchema('schema/lote_gnre_recibo_v1.00.xsd')       
-        if xsd_path_envio.is_valid(xml_retorno_lote):
-            print("XML de Retorno do Lote validado com sucesso")
-        else:
-            print("Erro no XML de Retorno do Lote")
-            print(xsd_path_envio.validate(xml_retorno_lote))
+    
         
     
     
@@ -151,7 +133,7 @@ class GeraLoteGNRE:
         # Gerando e exibindo o XML com múltiplas guias
         
         #Validando o xml criado com o XSD        
-        self.validar_xml_envio_lote(lote_guias)
+        validar_xml(lote_guias,'schema/lote_gnre_v2.00.xsd')
         # Montando o XML completo para enviar
         xml_lote_gnre = self.xml_envio_completo(lote_guias)
         
@@ -174,14 +156,13 @@ class GeraLoteGNRE:
                 print("Lote enviado com sucesso!\n",response.content)
                 
                 retorno_lote = self.extrair_TRetLote_GNRE(response.content)                
-                self.validar_xml_retorno_lote(retorno_lote)
+                validar_xml(retorno_lote,'schema/lote_gnre_recibo_v1.00.xsd')
                 numero_recibo = self.extrair_numero_recibo(retorno_lote)
                 return numero_recibo
                 
             else:
                 return f"Erro no envio do lote: {response.status_code} - {response.content}"
-        
-             
+                     
         
         
         except requests.exceptions.RequestException as e:

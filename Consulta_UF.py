@@ -2,6 +2,7 @@ import requests
 from lxml import etree
 
 import xmlschema
+from validadorXML import validar_xml
 
 
 import xml.etree.ElementTree as ET
@@ -44,14 +45,7 @@ class ConsultaUF:
 
         return etree.tostring(soap_env, pretty_print=True, xml_declaration=True, encoding='UTF-8')
 
-    def validar_xml(self, gnre_element):
-        schema = xmlschema.XMLSchema('schema/consulta_config_uf_v1.00.xsd')  # Adicione o caminho para o seu arquivo XSD
-        xml_string = etree.tostring(gnre_element)
-        if schema.is_valid(xml_string):
-            print("XML de Envio da UF validado com sucesso")
-        else:
-            print("Erro no XML de Envio da UF")
-            print(schema.validate(xml_string))
+    
 
     
     
@@ -62,7 +56,7 @@ class ConsultaUF:
         gnre_element = self.gerar_corpo_gnre(ambiente, uf , receita, tiposGnre)
         
         # Valida o XML gerado
-        self.validar_xml(gnre_element)
+        validar_xml(gnre_element,'schema/consulta_config_uf_v1.00.xsd')
 
         # Cria o envelope SOAP após a validação
         data = self.gerar_envelope_soap(gnre_element)
@@ -107,14 +101,7 @@ class ConsultaUF:
             return None
 
 
-    def validar_xml_retorno(self, gnre_element):
-        schema = xmlschema.XMLSchema('schema/config_uf_v1.00.xsd')  # Adicione o caminho para o seu arquivo XSD
-            
-        if schema.is_valid(gnre_element):
-            print("XML de Retorno da Consulta UF validado com sucesso")
-        else:
-            print("Erro na  validação do XML de Retorno da Consulta UF")
-            print(schema.validate(gnre_element))
+    
 
 
 
@@ -122,7 +109,7 @@ class ConsultaUF:
 
 retorno_consulta = ConsultaUF().consultar('1', 'PR','100099','S') 
 
-ConsultaUF().validar_xml_retorno(retorno_consulta)
+ConsultaUF().validar_xml(retorno_consulta,'schema/config_uf_v1.00.xsd')
 
 
 

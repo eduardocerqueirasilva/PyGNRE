@@ -1,7 +1,8 @@
 import requests
 from lxml import etree
 import base64
-import xmlschema
+
+from validadorXML import validar_xml
 
 
 
@@ -52,13 +53,7 @@ class ConsultaGNRE:
 
     
     
-    def validar_xml(self, gnre_element):
-        schema = xmlschema.XMLSchema('schema/lote_gnre_consulta_v1.00.xsd')  # Adicione o caminho para o seu arquivo XSD
-        xml_string = etree.tostring(gnre_element)
-        if schema.is_valid(xml_string):
-            print("XML válido.")
-        else:
-            print("XML inválido.", schema.validate(xml_string))
+    
 
     
     def remove_namespace_xml(self, resposta):
@@ -91,8 +86,9 @@ class ConsultaGNRE:
         
         gnre_element = self.gerar_corpo_gnre(ambiente, numero_recibo, incluir_pdf_guias, incluir_arquivo_pagamento, incluir_noticias)
         
+        
         # Valida o XML gerado
-        self.validar_xml(gnre_element)
+        validar_xml(gnre_element,'schema/lote_gnre_consulta_v1.00.xsd')
 
         # Cria o envelope SOAP após a validação
         xml_completo = self.gerar_envelope_soap(gnre_element)
