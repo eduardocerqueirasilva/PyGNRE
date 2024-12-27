@@ -79,20 +79,6 @@ class ConsultaGNRE:
         return xml_formatado  # Retorna o conteúdo da resposta sem atributos
     
     
-
-    def base64_para_PDF(self,xml_formatado,incluir_pdf_guias):
-        root = etree.fromstring(xml_formatado)
-        ns = {'ns': 'http://www.gnre.pe.gov.br'}
-        pdf_guias = root.find('.//pdfGuias')
-        if incluir_pdf_guias == 'S':
-            if (pdf_guias is not None and pdf_guias.text):
-                pdf_content = base64.b64decode(pdf_guias.text)
-                with open('reports/gnre2.pdf', 'wb') as pdf_file:
-                    pdf_file.write(pdf_content)
-                print("PDF salvo como gnre.pdf")
-            else:
-                print("pdfGuias não encontrado na resposta.")
-    
     
        
     
@@ -121,7 +107,6 @@ class ConsultaGNRE:
                 print("Consulta realizada com sucesso!")
                 print(response.content)
                 xml_formatado = self.remove_namespace_xml(response.content)
-                self.base64_para_PDF(xml_formatado,incluir_pdf_guias)
                 return xml_formatado
                           
             else:

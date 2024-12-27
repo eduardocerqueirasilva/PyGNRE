@@ -147,13 +147,13 @@ class GeraLoteGNRE:
     
 
 
-    def geraGuias(self, guias):
+    def geraGuias(self, lote_guias):
         # Gerando e exibindo o XML com múltiplas guias
-        lote_gnre = self.gera_lote_guias(guias)
+        
         #Validando o xml criado com o XSD        
-        self.validar_xml_envio_lote(lote_gnre)
+        self.validar_xml_envio_lote(lote_guias)
         # Montando o XML completo para enviar
-        xml_lote_gnre = self.xml_envio_completo(lote_gnre)
+        xml_lote_gnre = self.xml_envio_completo(lote_guias)
         
         print("XML LOTE GNRE " + xml_lote_gnre.decode('utf-8'))
         

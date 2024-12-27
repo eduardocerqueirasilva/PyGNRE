@@ -1,6 +1,6 @@
 import requests
 from lxml import etree
-import base64
+
 import xmlschema
 
 
