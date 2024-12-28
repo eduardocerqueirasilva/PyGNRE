@@ -6,57 +6,56 @@ from validadorXML import validar_xml
 
 
 
-class ConsultaGNRE:
+class Estrutura_XML_CONSULTA_GNRE:
        
-    def gerar_corpo_gnre(self, ambiente, numero_recibo, incluir_pdf_guias=None, incluir_arquivo_pagamento=None, incluir_noticias=None):
-        gnre = etree.Element('TConsLote_GNRE', xmlns='http://www.gnre.pe.gov.br')
+    def Corpo_XML_GNRE(ambiente, numero_recibo, incluir_pdf_guias=None, incluir_arquivo_pagamento=None, incluir_noticias=None):
+        T_CONS_LOTE_GNRE = etree.Element('TConsLote_GNRE', xmlns='http://www.gnre.pe.gov.br')
         
-        ambiente_elem = etree.SubElement(gnre, 'ambiente')
-        ambiente_elem.text = ambiente
+        AMBIENTE = etree.SubElement(T_CONS_LOTE_GNRE, 'ambiente')
+        AMBIENTE.text = ambiente
         
-        numero_recibo_elem = etree.SubElement(gnre, 'numeroRecibo')
-        numero_recibo_elem.text = numero_recibo
+        NUMERO_RECIBO = etree.SubElement(T_CONS_LOTE_GNRE, 'numeroRecibo')
+        NUMERO_RECIBO.text = numero_recibo
 
         if incluir_pdf_guias is not None:
-            incluir_pdf_guias_elem = etree.SubElement(gnre, 'incluirPDFGuias')
-            incluir_pdf_guias_elem.text = incluir_pdf_guias
+            INCLUIR_PDF_GUIAS = etree.SubElement(T_CONS_LOTE_GNRE, 'incluirPDFGuias')
+            INCLUIR_PDF_GUIAS.text = incluir_pdf_guias
 
         if incluir_arquivo_pagamento is not None:
-            incluir_arquivo_pagamento_elem = etree.SubElement(gnre, 'incluirArquivoPagamento')
-            incluir_arquivo_pagamento_elem.text = incluir_arquivo_pagamento
+            INCLUIR_ARQUIVO_PAGAMENTO = etree.SubElement(T_CONS_LOTE_GNRE, 'incluirArquivoPagamento')
+            INCLUIR_ARQUIVO_PAGAMENTO.text = incluir_arquivo_pagamento
 
         if incluir_noticias is not None:
-            incluir_noticias_elem = etree.SubElement(gnre, 'incluirNoticias')
-            incluir_noticias_elem.text = incluir_noticias
+            INCLUIR_NOTICIAS = etree.SubElement(T_CONS_LOTE_GNRE, 'incluirNoticias')
+            INCLUIR_NOTICIAS.text = incluir_noticias
         
-        return gnre
+        return T_CONS_LOTE_GNRE
 
     
     
-    def gerar_envelope_soap(self, gnre_element):
-        soap_env = etree.Element('{http://www.w3.org/2003/05/soap-envelope}Envelope', nsmap={
+    def Envelope_SOAP_GNRE(corpo_xml):
+        ENVELOPE = etree.Element('{http://www.w3.org/2003/05/soap-envelope}Envelope', nsmap={
             'soapenv': 'http://www.w3.org/2003/05/soap-envelope',
             'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
             'xsd': 'http://www.w3.org/2001/XMLSchema'
         })
 
-        soap_header = etree.SubElement(soap_env, '{http://www.w3.org/2003/05/soap-envelope}Header')
-        gnre_cabecalho_soap = etree.SubElement(soap_header, 'gnreCabecMsg', xmlns='http://www.gnre.pe.gov.br/wsdl/consultar')
-        versao_dados = etree.SubElement(gnre_cabecalho_soap, 'versaoDados')
-        versao_dados.text = '2.00'
+        HEADER = etree.SubElement(ENVELOPE, '{http://www.w3.org/2003/05/soap-envelope}Header')
+        GNRE_CABEC_MSG = etree.SubElement(HEADER, 'gnreCabecMsg', xmlns='http://www.gnre.pe.gov.br/wsdl/consultar')
+        VERSAO_DADOS = etree.SubElement(GNRE_CABEC_MSG, 'versaoDados')
+        VERSAO_DADOS.text = '2.00'
 
-        soap_body = etree.SubElement(soap_env, '{http://www.w3.org/2003/05/soap-envelope}Body')
-        gnre_dados_msg = etree.SubElement(soap_body, 'gnreDadosMsg', xmlns='http://www.gnre.pe.gov.br/webservice/GnreResultadoLote')
-        gnre_dados_msg.append(gnre_element)
+        BODY = etree.SubElement(ENVELOPE, '{http://www.w3.org/2003/05/soap-envelope}Body')
+        GNRE_DADOS_MSG = etree.SubElement(BODY, 'gnreDadosMsg', xmlns='http://www.gnre.pe.gov.br/webservice/GnreResultadoLote')
+        
+        if corpo_xml is not None:
+            GNRE_DADOS_MSG.append(corpo_xml)
+        
+        return etree.tostring(ENVELOPE, pretty_print=True, xml_declaration=True, encoding='UTF-8')
 
-        return etree.tostring(soap_env, pretty_print=True, xml_declaration=True, encoding='UTF-8')
 
     
-    
-    
-
-    
-    def remove_namespace_xml(self, resposta):
+    def remove_namespace_xml(resposta):
         root = etree.fromstring(resposta)
         # Remover todos os atributos do XML de resposta
         for elem in root.iter():
@@ -74,41 +73,3 @@ class ConsultaGNRE:
         return xml_formatado  # Retorna o conteúdo da resposta sem atributos
     
     
-    
-       
-    
-    def consultar(self, ambiente, numero_recibo, incluir_pdf_guias=None, incluir_arquivo_pagamento=None, incluir_noticias=None):
-        headers = {
-            "Content-Type": "application/soap+xml; charset=utf-8",
-            "SOAPAction": "http://www.gnre.pe.gov.br/webservice/GnreResultadoLote"
-        }        
-        url = 'https://www.gnre.pe.gov.br/gnreWS/services/GnreResultadoLote'
-        
-        gnre_element = self.gerar_corpo_gnre(ambiente, numero_recibo, incluir_pdf_guias, incluir_arquivo_pagamento, incluir_noticias)
-        
-        
-        # Valida o XML gerado
-        validar_xml(gnre_element,'schema/lote_gnre_consulta_v1.00.xsd')
-
-        # Cria o envelope SOAP após a validação
-        xml_completo = self.gerar_envelope_soap(gnre_element)
-        
-        session = requests.Session()
-        session.verify = True
-        session.cert = ('certificados/certificado.pem', 'certificados/chave_certificado.pem')
-
-        try:
-            response = session.post(url, data=xml_completo, headers=headers)
-            if response.status_code == 200:
-                print("Consulta realizada com sucesso!")
-                print(response.content)
-                xml_formatado = self.remove_namespace_xml(response.content)
-                return xml_formatado
-                          
-            else:
-                print(f"Erro na consulta: {response.status_code}")
-                print("Detalhes:", response.content)
-                return response.content  # Retorna o conteúdo da resposta em caso de erro
-        except requests.exceptions.RequestException as e:
-            print(f"Erro de conexão: {e}")
-            return None
