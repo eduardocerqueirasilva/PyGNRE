@@ -3,6 +3,7 @@ import os
 import tempfile
 from pyreportjasper import PyReportJasper
 from lxml import etree
+from Variaveis import PATH
 import base64
 
 def xml_to_pdf(response_content, to_base64=False, nome="GNRE"):
@@ -13,10 +14,9 @@ def xml_to_pdf(response_content, to_base64=False, nome="GNRE"):
         
         if pdf_guias is not None and pdf_guias.text:
             pdf_content = base64.b64decode(pdf_guias.text)
-            pdf_file_path = f'reports/{nome}.pdf'
+            pdf_file_path = f'{PATH}reports/{nome}.pdf'
             with open(pdf_file_path, 'wb') as pdf_file:
                 pdf_file.write(pdf_content)
-            print("PDF salvo como gnre2.pdf")
             return pdf_file_path
         else:
             print("pdfGuias não encontrado na resposta.")

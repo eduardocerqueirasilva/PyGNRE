@@ -1,3 +1,5 @@
+PATH = ""
+
 URL_GNRE_LOTE = {
     "producao":"https://www.gnre.pe.gov.br/gnreWS/services/GnreLoteRecepcao",
     "homologacao":"https://www.testegnre.pe.gov.br/gnreWS/services/GnreLoteRecepcao",

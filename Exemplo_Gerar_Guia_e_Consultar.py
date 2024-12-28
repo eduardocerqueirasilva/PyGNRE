@@ -2,14 +2,14 @@ from Envio_Lote_GNRE import Estrutura_XML_LOTE_GNRE
 from Consulta_Protocolo import Estrutura_XML_CONSULTA_GNRE
 from guias import lista_de_guias
 from report import xml_to_pdf
-from Variaveis import URL_GNRE_LOTE, URL_GNRE_CONSULTA
+from Variaveis import URL_GNRE_LOTE, URL_GNRE_CONSULTA, PATH
 from Comunicacao import Envia_Requisicao
 from validadorXML import validar_xml
 
 
 
 corpo_xml_lote = Estrutura_XML_LOTE_GNRE.Corpo_XML_GNRE(lista_de_guias)
-#validar_xml(corpo_xml,'schema/lote_gnre_v2.00.xsd')  #VALIDAR O XML DE ENVIO
+#validar_xml(corpo_xml_lote,f'{PATH}schema/lote_gnre_v2.00.xsd')  #VALIDAR O XML DE ENVIO
 
 xml_completo_lote = Estrutura_XML_LOTE_GNRE.Envelope_SOAP_GNRE(corpo_xml_lote)
 #print("XML COMPLETO:" , xml_completo.decode('utf-8'))
@@ -22,7 +22,7 @@ xml_retornado_lote = Envia_Requisicao(
                         evento_gnre="processar"
                         )
 
-#validar_xml(Estrutura_XML_LOTE_GNRE.extrair_TRetLote_GNRE(xml_retornado),'schema/lote_gnre_recibo_v1.00.xsd') #VALIDAR O XML RETORNADO
+#validar_xml(Estrutura_XML_LOTE_GNRE.extrair_TRetLote_GNRE(xml_retornado_lote),f'{PATH}schema/lote_gnre_recibo_v1.00.xsd') #VALIDAR O XML RETORNADO
 
 recibo = Estrutura_XML_LOTE_GNRE.extrair_numero_recibo(xml_retornado_lote)
 
@@ -37,7 +37,7 @@ if recibo:
                             incluir_noticias='N'
                             )    
     
-    validar_xml(corpo_xml_consulta,'schema/lote_gnre_consulta_v1.00.xsd') # Valida o XML gerado
+    #validar_xml(corpo_xml_consulta,f'{PATH}schema/lote_gnre_consulta_v1.00.xsd') # Valida o XML gerado
     
     
     xml_completo_consulta = Estrutura_XML_CONSULTA_GNRE.Envelope_SOAP_GNRE(corpo_xml_consulta)
