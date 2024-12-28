@@ -1,5 +1,6 @@
 import requests
 from Certificado import certificadoA4
+from Variaveis import EVENTO_GNRE
 
 
 
@@ -11,7 +12,7 @@ def Envia_Requisicao(empresa,ambiente, data, evento_gnre):
 
     headers = {
         "Content-Type": "application/soap+xml; charset=utf-8;",
-        "SOAPAction": evento_gnre,
+        "SOAPAction": EVENTO_GNRE[evento_gnre],
     }
 
     try:
